@@ -1,5 +1,6 @@
 package tv.mapper.mapperbase;
 
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import tv.mapper.mapperbase.config.BaseConfig;
 import tv.mapper.mapperbase.world.BaseOreGenerator;
+import tv.mapper.mapperbase.world.item.BaseGroups;
 import tv.mapper.mapperbase.world.item.BaseItems;
 import tv.mapper.mapperbase.world.level.block.BaseBlocks;
 
@@ -28,10 +30,12 @@ public class MapperBase
 
         BaseBlocks.init();
         BaseItems.init();
+        BaseGroups.init();
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::addToCreativeTab);
 
         MinecraftForge.EVENT_BUS.register(new BaseOreGenerator());
     }
@@ -46,4 +50,10 @@ public class MapperBase
 
     private void serverSetup(final FMLDedicatedServerSetupEvent event)
     {}
+
+    private void addToCreativeTab(BuildCreativeModeTabContentsEvent event)
+    {
+        if (event.getTab() == BaseGroups.MAPPERBASE.get())
+            BaseItems.ITEMS.getEntries().forEach(event::accept);
+    }
 }

@@ -1,36 +1,33 @@
 package tv.mapper.mapperbase.world.level.block;
 
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public class CustomButtonBlock extends ButtonBlock implements ToolManager
 {
-    private boolean wooden;
     protected ToolTiers tier;
     protected ToolTypes tool;
 
-    public CustomButtonBlock(boolean isWooden, Properties properties, ToolTypes tool)
+    public CustomButtonBlock(Properties properties, ToolTypes tool, ToolTiers tier, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPress)
     {
-        super(isWooden, properties);
-        this.tool = tool;
-        this.tier = ToolTiers.WOOD;
-    }
-
-    public CustomButtonBlock(boolean isWooden, Properties properties, ToolTypes tool, ToolTiers tier)
-    {
-        super(isWooden, properties);
+        super(properties, blockSetType, ticksToStayPressed, arrowsCanPress);
         this.tool = tool;
         this.tier = tier;
     }
 
-    @Override
-    protected SoundEvent getSound(boolean activate)
+    public CustomButtonBlock(Properties properties, ToolTypes tool, ToolTiers tier, BlockSetType blockSetType,  boolean arrowsCanPress)
     {
-        if(wooden)
-            return activate ? SoundEvents.WOODEN_BUTTON_CLICK_ON : SoundEvents.WOODEN_BUTTON_CLICK_OFF;
-        else
-            return activate ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
+        this(properties, tool, tier, blockSetType, 30, true);
+    }
+
+    public CustomButtonBlock(Properties properties, ToolTypes tool, BlockSetType blockSetType, int ticksToStayPressed, boolean arrowsCanPress)
+    {
+        this(properties, tool, ToolTiers.WOOD, blockSetType, ticksToStayPressed, arrowsCanPress);
+    }
+
+    public CustomButtonBlock(Properties properties, ToolTypes tool, BlockSetType blockSetType)
+    {
+        this(properties, tool, ToolTiers.WOOD, blockSetType, 30, true);
     }
 
     @Override
